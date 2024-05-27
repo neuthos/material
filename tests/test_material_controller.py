@@ -2,6 +2,7 @@ import json
 from urllib.request import Request, urlopen
 from odoo.tests.common import HttpCase
 
+BASE_ENPOINT = '/api/materials'
 class TestMaterialController(HttpCase):
 
     def test_create_material(self):
@@ -13,7 +14,7 @@ class TestMaterialController(HttpCase):
             'supplier_id': 1
         }
 
-        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + '/api/materials'
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + BASE_ENPOINT
         req = Request(url=url, data=json.dumps(data).encode(), headers={'Content-Type': 'application/json'}, method='POST')
         response = urlopen(req)
         res = json.loads(response.read().decode('utf-8'))
@@ -45,7 +46,7 @@ class TestMaterialController(HttpCase):
             'supplier_id': 2
         })
         
-        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + '/api/materials?page=1&size=2'
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + BASE_ENPOINT + '?page=1&size=2'
         req = Request(url=url, method='GET')
         response = urlopen(req)
         res = json.loads(response.read().decode('utf-8'))
@@ -69,7 +70,7 @@ class TestMaterialController(HttpCase):
             'buy_price': 200,
         }
 
-        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + '/api/materials/' + str(material.id)
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + BASE_ENPOINT + '/' + str(material.id)
         req = Request(url=url, data=json.dumps(data).encode(), headers={'Content-Type': 'application/json'}, method='PUT')
         response = urlopen(req)
         res = json.loads(response.read().decode('utf-8'))
@@ -94,7 +95,7 @@ class TestMaterialController(HttpCase):
             'supplier_id': 1
         })
 
-        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + '/api/materials/' + str(material.id)
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + BASE_ENPOINT + '/' + str(material.id)
         req = Request(url=url, method='DELETE')
         response = urlopen(req)
         res = json.loads(response.read().decode('utf-8'))
